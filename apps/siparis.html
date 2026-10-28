@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>sipariş</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#8f2414;--ink:#f6ecdc;--mute:#f6ecdcc2;--line:#f6ecdc33;--acc:#f2b66b}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;font-weight:300;background:var(--bg);color:var(--ink);height:100vh;padding:52px 24px 26px;display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:38px;line-height:1;letter-spacing:-.02em;margin-bottom:14px}
+.it{padding:18px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.it b{font-family:'DM Serif Display',serif;font-weight:400;font-size:23px;flex:1;line-height:1.1}.it small{display:block;font-family:'DM Sans';font-size:12px;color:var(--mute);margin-top:4px}
+.q{display:flex;align-items:center;border:1px solid var(--line);border-radius:99px;padding:2px}
+.q button{width:28px;height:28px;border-radius:50%;font-size:15px;transition:background .15s,color .15s}.q button:active{background:var(--ink);color:var(--bg)}.q span{min-width:20px;text-align:center;font-size:14px;font-variant-numeric:tabular-nums}
+.bar{margin-top:auto;background:var(--ink);color:var(--bg);padding:17px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:opacity .3s,transform .2s cubic-bezier(.2,.8,.2,1);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.bar:active{transform:scale(.98)}.bar.off{opacity:.25;pointer-events:none}.bar b{font-family:'DM Serif Display';font-weight:400;font-size:20px;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums}
+.trk{position:absolute;inset:0;background:var(--bg);padding:64px 28px;display:none;flex-direction:column}.trk.on{display:flex;animation:in .5s both}
+.trk h1{margin-bottom:34px}
+.s{display:flex;align-items:center;gap:16px;padding-bottom:30px;position:relative;opacity:.3;transition:opacity .6s}
+.s:not(:last-child):before{content:"";position:absolute;left:5.5px;top:16px;bottom:-2px;width:1px;background:var(--line)}
+.s.on{opacity:1}.s i{width:12px;height:12px;border-radius:50%;border:1px solid var(--ink);flex:none;transition:background .4s}
+.s.on i{background:var(--ink)}.s.now i{background:var(--acc);border-color:var(--acc);animation:pu 1.4s infinite}
+@keyframes pu{50%{box-shadow:0 0 0 6px #f2b66b33}}@keyframes in{from{opacity:0}}
+</style></head><body>
+<h1>fırın napoli</h1><div id="m"></div>
+<div class="bar off" id="bar"><span id="cnt">sepet boş</span><b id="tot">0 ₺</b></div>
+<div class="trk" id="trk"><h1>siparişiniz yolda.</h1><div class="s"><i></i>hazırlanıyor</div><div class="s"><i></i>fırında</div><div class="s"><i></i>kuryede</div><div class="s"><i></i>kapınızda</div></div>
+<script>
+const P=[['margherita','mozzarella, fesleğen',180],['diavola','acı salam',220],['funghi','mantar, kekik',210]];const q=P.map(()=>0);const $=s=>document.querySelector(s);
+const draw=()=>{$('#m').innerHTML=P.map((x,i)=>`<div class="it"><b>${x[0]}<small>${x[1]} · ${x[2]} ₺</small></b><div class="q"><button data-m="${i}" aria-label="azalt">−</button><span>${q[i]}</span><button data-p="${i}" aria-label="artır">+</button></div></div>`).join('');
+const n=q.reduce((a,b)=>a+b,0),t=q.reduce((a,b,i)=>a+b*P[i][2],0);$('#cnt').textContent=n?`${n} ürün · siparişi ver`:'sepet boş';$('#tot').textContent=t+' ₺';$('#bar').classList.toggle('off',!n)};
+document.addEventListener('click',e=>{const a=e.target.closest('[data-p]'),m=e.target.closest('[data-m]');if(a)q[+a.dataset.p]++;if(m&&q[+m.dataset.m])q[+m.dataset.m]--;if(a||m)draw()});
+$('#bar').onclick=()=>{$('#trk').classList.add('on');[0,1,2,3].forEach(i=>setTimeout(()=>{document.querySelectorAll('.s').forEach((s,k)=>{s.classList.toggle('on',k<=i);s.classList.toggle('now',k===i&&i<3)})},i*1100+200))};draw();
+</script></body></html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>arda hukuk</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Albert+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f2;--ink:#14202e;--mute:#14202ebd;--line:#14202e26;--acc:#7a5b22}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Albert Sans',sans-serif;font-weight:300;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+::selection{background:var(--ink);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--acc);outline-offset:3px}
+nav{display:flex;align-items:baseline;gap:34px;padding:26px 48px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+.logo{font-family:Newsreader,serif;font-size:21px;letter-spacing:.02em;text-transform:none;margin-right:auto}
+.logo i{color:var(--acc)}
+nav a{color:var(--mute)}
+.wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:80px;padding:72px 48px 80px}
+h1{font-family:Newsreader,serif;font-weight:300;font-size:clamp(40px,5.8vw,82px);line-height:1;letter-spacing:-.025em}
+h1 em{color:var(--acc);font-style:normal}
+.lead{margin:24px 0 44px;color:var(--mute);max-width:26em;line-height:1.65}
+.acc{border-top:1px solid var(--line)}
+.acc button{width:100%;display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);font-family:Newsreader,serif;font-size:23px;padding:18px 0;text-align:left;transition:padding .3s cubic-bezier(.2,.8,.2,1)}
+.acc button:hover{padding-left:6px}
+.acc button:after{content:"";width:9px;height:9px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);transform:translateY(-3px) rotate(45deg);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.acc .open button:after{transform:translateY(2px) rotate(225deg)}
+.acc .b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}.acc .open .b{grid-template-rows:1fr}
+.acc .b p{overflow:hidden;color:var(--mute);font-size:15px;line-height:1.65;max-width:34em}
+.acc .open .b p{padding:14px 0 6px}
+form{display:grid;gap:26px;align-content:start}
+form h2{font-family:Newsreader,serif;font-weight:300;font-size:30px}
+label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);display:grid;gap:6px}
+input,textarea{font:inherit;font-size:16px;font-weight:300;color:var(--ink);width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:8px 0;outline:none;resize:none;border-radius:0;transition:border-color .25s;letter-spacing:0;text-transform:none}
+input:focus,textarea:focus{border-color:var(--ink)}.err{border-color:#a3392f!important}
+form button{background:var(--ink);color:var(--bg);padding:16px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;transition:opacity .2s}form button:hover{opacity:.85}
+.ok{color:var(--acc);font-size:14px;min-height:20px}
+@media(max-width:760px){nav{padding:20px}nav a{display:none}.wrap{grid-template-columns:1fr;gap:48px;padding:40px 20px 56px}}
+</style></head><body>
+<nav><span class="logo">arda hukuk<i>.</i></span><a>uzmanlık</a><a>iletişim</a></nav>
+<div class="wrap"><div><h1>hakkınızı<br><em>güvenle</em> savunuruz.</h1><p class="lead">her dosyaya özenle, açık ve anlaşılır bir dille yaklaşıyoruz.</p>
+<div class="acc" id="acc"></div></div>
+<form id="f" novalidate><h2>ön görüşme talebi</h2><label>adınız soyadınız<input name="n" autocomplete="off"></label><label>e-posta<input name="e" autocomplete="off"></label><label>konunuz<textarea name="m" rows="3"></textarea></label><button>gönder</button><div class="ok" id="ok"></div></form></div>
+<script>
+const A=[['aile hukuku','boşanma, velayet ve nafaka süreçlerinde sakin ve çözüm odaklı destek.'],['ticaret hukuku','şirket kuruluşu, sözleşmeler ve ticari uyuşmazlıklarda danışmanlık.'],['iş hukuku','işçi ve işveren için hak ve yükümlülükleri netleştiren hukuki destek.'],['gayrimenkul hukuku','alım satım, kira ve tapu işlemlerinde güvenli yol haritası.']];
+const $=s=>document.querySelector(s);
+$('#acc').innerHTML=A.map((x,i)=>`<div class="${i?'':'open'}"><button>${x[0]}</button><div class="b"><p>${x[1]}</p></div></div>`).join('');
+$('#acc').onclick=e=>{const d=e.target.closest('button')?.parentElement;if(!d)return;const o=d.classList.contains('open');document.querySelectorAll('#acc>div').forEach(x=>x.classList.remove('open'));if(!o)d.classList.add('open')};
+$('#f').onsubmit=e=>{e.preventDefault();const f=e.target;let ok=true;
+[['n',v=>v.trim().length>2],['e',v=>/^\S+@\S+\.\S+$/.test(v)],['m',v=>v.trim().length>5]].forEach(([k,t])=>{const el=f[k],g=t(el.value);el.classList.toggle('err',!g);if(!g)ok=false});
+$('#ok').textContent=ok?'talebiniz alındı, en kısa sürede dönüş yapılır (örnek).':'lütfen alanları kontrol edin.'};
+</script></body></html>

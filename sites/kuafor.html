@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>mira studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1e1418;--ink:#f0e4e0;--mute:#f0e4e0b8;--line:#f0e4e033;--acc:#d9a1b4}
+*{box-sizing:border-box;margin:0}
+body{font-family:Jost,sans-serif;font-weight:300;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+::selection{background:var(--acc);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--acc);outline-offset:3px}
+nav{display:flex;align-items:center;gap:30px;padding:24px 40px;font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+.logo{font-family:'Bodoni Moda',serif;font-size:24px;letter-spacing:.02em;text-transform:none;margin-right:auto}
+nav a{color:var(--mute)}
+.wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;padding:40px 40px 64px;align-items:start}
+h1{font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6vw,82px);line-height:.98;letter-spacing:-.025em}
+h1 em{color:var(--acc);font-style:normal}
+.lead{margin:20px 0 34px;color:var(--mute);max-width:26em;line-height:1.6}
+.svc{display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:padding .3s cubic-bezier(.2,.8,.2,1)}
+.svc:hover{padding-left:6px}
+.svc input{appearance:none;width:14px;height:14px;border:1px solid var(--ink);border-radius:50%;margin:0;cursor:pointer;transition:background .2s,box-shadow .2s}
+.svc input:checked{background:var(--acc);border-color:var(--acc);box-shadow:0 0 0 3px var(--bg),0 0 0 4px var(--acc)}
+.svc span{flex:1;font-size:15px}.svc b{font-weight:300;font-variant-numeric:tabular-nums;color:var(--mute)}
+.total{display:flex;justify-content:space-between;align-items:baseline;font-family:'Bodoni Moda',serif;font-size:34px;margin:26px 0 20px}
+.total span{font-family:Jost;font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+.slots{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.slots button{border:1px solid var(--line);padding:9px 18px;font-size:13px;letter-spacing:.06em;transition:background .2s,color .2s,border-color .2s}
+.slots button:hover{border-color:var(--ink)}
+.slots button.on,.book{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.book{width:100%;padding:16px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;transition:opacity .2s}.book:disabled{opacity:.25;cursor:default}
+.msg{margin-top:14px;font-size:14px;min-height:20px;color:var(--acc)}
+.ba{position:relative;aspect-ratio:4/5;border-radius:999px 999px 0 0;overflow:hidden;--p:50%}
+.ba div{position:absolute;inset:0;display:flex;align-items:flex-end;padding:0 24px 22px}
+.ba svg{position:absolute;inset:0;width:100%;height:100%}
+.ba span{position:relative;background:#1e1418d9;color:var(--ink);padding:7px 14px;border-radius:99px;font-size:11px;letter-spacing:.3em;text-transform:uppercase}
+.b1{justify-content:flex-start}
+.b2{justify-content:flex-end;clip-path:inset(0 0 0 var(--p))}
+.ba i{position:absolute;top:0;bottom:0;left:var(--p);width:1px;background:#fff;box-shadow:0 0 0 .5px #0003}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}
+@media(max-width:700px){nav{padding:20px}nav a{display:none}.wrap{grid-template-columns:1fr;gap:40px;padding:24px 20px 48px}.ba{max-width:360px}}
+</style></head><body>
+<nav><span class="logo">mira studio</span><a>hizmetler</a><a>randevu</a></nav>
+<div class="wrap"><div><h1>kendinizi<br><em>yeniden</em> keşfedin.</h1><p class="lead">hizmetleri seçin, saatinizi belirleyin. gerisini bize bırakın.</p>
+<div id="svc"></div><div class="total"><span>toplam</span><b id="tot">0 ₺</b></div><div class="slots" id="slots"></div><button class="book" id="book" disabled>randevu al</button><div class="msg" id="msg"></div></div>
+<div class="ba" id="ba"><div class="b1"><svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="500" fill="#3b3036"/><circle cx="200" cy="200" r="132" fill="#4a3d44"/><path d="M200 98C132 98 114 170 118 250L110 486L290 486L282 250C286 170 268 98 200 98Z" fill="#3f3129"/><ellipse cx="200" cy="190" rx="0" ry="0"/><rect x="180" y="236" width="40" height="76" fill="#efc9aa"/><path d="M166 296L200 338L234 296Z" fill="#efc9aa"/><path d="M180 238Q200 274 220 238Z" fill="#d9a584"/>
+<path d="M60 500C60 370 120 306 168 298L200 336L232 298C280 306 340 370 340 500Z" fill="#8d8189"/><ellipse cx="200" cy="190" rx="52" ry="64" fill="#efc9aa"/>
+<path d="M178 197q9 6 18 0M204 197q9 6 18 0M176 184q10-5 20-1M204 183q10-4 20 1" fill="none" stroke="#3a2a2a" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M201 203q-5 13 1 17" fill="none" stroke="#d9a584" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M188 233q12 8 24 0q-12-6-24 0z" fill="#b07a7a"/><path d="M152 132C132 170 134 240 128 300L120 484L158 484L160 300C160 240 162 190 170 150Z" fill="#4d3d35"/><path d="M248 132C268 170 266 240 272 300L280 484L242 484L240 300C240 240 238 190 230 150Z" fill="#4d3d35"/><path d="M200 102C148 102 142 170 148 206C160 170 182 140 200 120C218 140 240 170 252 206C258 170 252 102 200 102Z" fill="#4d3d35"/><path d="M200 106V122M140 300L134 476M260 300L266 476" fill="none" stroke="#6b5a50" stroke-width="2.5" stroke-linecap="round" opacity=".7"/></svg><span>önce</span></div><div class="b2"><svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="500" fill="#6d2f48"/><circle cx="200" cy="200" r="132" fill="#8a4160"/><path d="M200 96C120 92 96 170 112 240C92 270 136 290 108 330C86 362 132 392 106 430C92 456 120 470 112 486L288 486C280 470 308 456 294 430C268 392 314 362 292 330C264 290 308 270 288 240C304 170 280 92 200 96Z" fill="#c9520f"/><ellipse cx="200" cy="190" rx="0" ry="0"/><rect x="180" y="236" width="40" height="76" fill="#f0c4a4"/><path d="M166 296L200 338L234 296Z" fill="#f0c4a4"/><path d="M180 238Q200 274 220 238Z" fill="#d9a07e"/>
+<path d="M60 500C60 370 120 306 168 298L200 336L232 298C280 306 340 370 340 500Z" fill="#f1e6dc"/><path d="M178 306Q200 324 222 306" fill="none" stroke="#d8b06a" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="200" cy="190" rx="52" ry="64" fill="#f0c4a4"/>
+<path d="M178 197q9 6 18 0M204 197q9 6 18 0M176 184q10-5 20-1M204 183q10-4 20 1" fill="none" stroke="#3a2a2a" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M201 203q-5 13 1 17" fill="none" stroke="#d9a07e" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M188 233q12 8 24 0q-12-6-24 0z" fill="#b3223f"/><ellipse cx="170" cy="216" rx="11" ry="7" fill="#e8745a" opacity=".3"/><ellipse cx="230" cy="216" rx="11" ry="7" fill="#e8745a" opacity=".3"/><path d="M150 130C128 170 136 210 126 250C108 285 144 305 124 345C108 378 138 402 120 440C112 458 128 470 126 478L158 478C150 440 170 420 156 385C140 350 168 320 152 285C140 255 160 215 172 165Z" fill="#ee6a1f"/><path d="M250 130C272 170 264 210 274 250C292 285 256 305 276 345C292 378 262 402 280 440C288 458 272 470 274 478L242 478C250 440 230 420 244 385C260 350 232 320 248 285C260 255 240 215 228 165Z" fill="#ee6a1f"/><path d="M200 100C146 100 142 168 146 206C166 170 180 142 214 124C240 140 256 176 254 206C260 168 256 100 200 100Z" fill="#ee6a1f"/><path d="M138 262C126 292 150 312 134 352M146 396C138 418 150 436 142 462M262 262C274 292 250 312 266 352M254 396C262 418 250 436 258 462M178 112C166 128 160 150 158 176" fill="none" stroke="#ffa862" stroke-width="3" stroke-linecap="round"/></svg><span>sonra</span></div><i></i><input type="range" min="0" max="100" value="50" aria-label="önce sonra"></div></div>
+<script>
+const S=[['saç kesimi',450],['fön',250],['saç boyama',1200],['keratin bakım',900],['manikür',350]];const $=s=>document.querySelector(s);let slot=null;
+$('#svc').innerHTML=S.map(x=>`<label class="svc"><input type="checkbox" data-p="${x[1]}"><span>${x[0]}</span><b>${x[1]} ₺</b></label>`).join('');
+$('#slots').innerHTML=['11:00','13:30','15:00','17:30'].map(t=>`<button data-s="${t}">${t}</button>`).join('');
+const upd=()=>{const t=[...document.querySelectorAll('.svc input:checked')].reduce((a,c)=>a+ +c.dataset.p,0);$('#tot').textContent=t+' ₺';$('#book').disabled=!(t&&slot)};
+document.addEventListener('change',e=>{if(e.target.matches('.svc input'))upd()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b){slot=b.dataset.s;document.querySelectorAll('.slots button').forEach(x=>x.classList.toggle('on',x===b));upd()}
+if(e.target.id==='book')$('#msg').textContent=`randevunuz yarın ${slot} için alındı (örnek)`});
+$('#ba input').oninput=e=>$('#ba').style.setProperty('--p',e.target.value+'%');
+</script></body></html>

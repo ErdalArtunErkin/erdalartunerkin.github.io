@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>sadakat kartı</title>
+<link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Karla:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1c2620;--ink:#ece6d6;--mute:#ece6d6b8;--line:#ece6d62b;--acc:#d9b27c}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Karla',sans-serif;background:var(--bg);color:var(--ink);height:100vh;padding:52px 24px 26px;display:flex;flex-direction:column;gap:20px;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;cursor:pointer}
+h1{font-family:'Gilda Display',serif;font-weight:400;font-size:38px;line-height:1;letter-spacing:-.02em}
+p.s{color:var(--mute);font-size:13px;margin-top:-10px}
+.card{background:#27352c;border:1px solid var(--line);border-radius:14px;padding:22px 22px 24px;color:var(--ink);box-shadow:0 1px 0 #ffffff14 inset,0 22px 40px -18px #1f1a1480,0 4px 10px -4px #1f1a1459;position:relative}
+.card h2{font-family:'Gilda Display',serif;font-weight:400;font-size:22px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px}
+.card h2 small{font-family:'Karla';font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+.g{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.st{aspect-ratio:1;border-radius:50%;border:1px solid #ece6d645;display:grid;place-items:center;transition:background .5s cubic-bezier(.2,.8,.2,1),border-color .5s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.st svg{width:46%;opacity:0;transform:scale(.4) rotate(-30deg);transition:.5s cubic-bezier(.2,.8,.2,1)}
+.st.on{background:var(--acc);border-color:var(--acc);color:var(--bg)}
+.st.on svg{opacity:1;transform:none}
+.cnt{text-align:center;color:var(--mute);font-size:13px}
+.add,.rs{background:var(--ink);color:var(--bg);border-radius:12px;padding:16px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;transition:transform .2s cubic-bezier(.2,.8,.2,1)}.add:active,.rs:active{transform:scale(.97)}
+.win{display:none;text-align:center;border:1px solid var(--line);border-radius:14px;padding:22px;animation:in .6s cubic-bezier(.2,.8,.2,1) both}.win.on{display:block}
+.win b{font-family:'Gilda Display',serif;font-weight:400;font-size:28px;display:block;margin-bottom:6px}.win small{color:var(--mute)}.win .rs{margin-top:18px;width:100%}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+</style></head><body>
+<h1>sadakat kartım</h1><p class="s">sekiz kahve, dokuzuncusu bizden.</p>
+<div class="card"><h2>bahçe kahve<small id="n8"></small></h2><div class="g" id="g"></div></div>
+<div class="cnt" id="cnt"></div><button class="add" id="add">damga ekle</button>
+<div class="win" id="win"><b>bir kahve bizden.</b><small>kartınız doldu, kasada göstermeniz yeterli.</small><button class="rs" id="rs">yeni kart</button></div>
+<script>
+let n=0;const $=s=>document.querySelector(s);
+const bean='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><ellipse cx="12" cy="12" rx="6.5" ry="9" transform="rotate(35 12 12)"/><path d="M8.5 16.5c2-2 5-5 7-9"/></svg>';
+const draw=()=>{$('#g').innerHTML=Array.from({length:8},(_,i)=>`<div class="st ${i<n?'on':''}">${bean}</div>`).join('');$('#n8').textContent=`${n} / 8`;$('#cnt').textContent=n<8?`${8-n} damga kaldı`:'';$('#add').style.display=n<8?'':'none';$('#win').classList.toggle('on',n>=8)};
+$('#add').onclick=()=>{if(n<8){n++;draw()}};$('#rs').onclick=()=>{n=0;draw()};draw();
+</script></body></html>

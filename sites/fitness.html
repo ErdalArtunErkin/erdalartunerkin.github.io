@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>pulse fit</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;700;900&family=Hanken+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0b;--ink:#efede6;--mute:#efede694;--line:#efede61f;--acc:#ff5b2e}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Hanken Grotesk',sans-serif;font-weight:300;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+::selection{background:var(--acc);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--acc);outline-offset:3px}
+nav{display:flex;align-items:center;padding:24px 40px}
+.logo{font-family:'Big Shoulders Display';font-weight:900;font-size:26px;letter-spacing:.14em;margin-right:auto}.logo i{color:var(--acc);font-style:normal}
+.cta{border:1px solid var(--ink);padding:10px 22px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;transition:background .25s,color .25s}
+.cta:hover{background:var(--ink);color:var(--bg)}
+.hero{padding:56px 40px 36px}
+h1{font-family:'Big Shoulders Display';font-weight:900;font-size:clamp(70px,15vw,230px);line-height:.8;letter-spacing:-.01em;text-transform:uppercase}
+h1 span{font-weight:300;color:var(--mute)}
+.sw{display:flex;gap:26px;padding:34px 40px 0;font-size:13px}
+.sw button{color:var(--mute);border-bottom:1px solid transparent;padding-bottom:3px;transition:color .2s}.sw button.on{color:var(--ink);border-color:var(--acc)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);margin:22px 40px 0;border-top:1px solid var(--line)}
+.pl{padding:26px 26px 30px 0;border-right:1px solid var(--line);padding-left:26px;transition:background .3s}
+.pl:first-child{padding-left:0}.pl:last-child{border-right:0}
+.pl:hover{background:#efede608}
+.pl h3{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;color:var(--mute)}
+.pl.hot h3{color:var(--acc)}
+.pl b{font-family:'Big Shoulders Display';font-weight:700;font-size:clamp(46px,6vw,78px);display:block;line-height:1;margin:14px 0 8px;font-variant-numeric:tabular-nums}
+.pl small{color:var(--mute);font-size:13px}
+.tt{display:flex;gap:26px;padding:44px 40px 8px;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+.tt button{color:var(--mute);border-bottom:1px solid transparent;padding-bottom:3px}.tt button.on{color:var(--ink);border-color:var(--acc)}
+.cls{padding:0 40px 60px}
+.row{display:grid;grid-template-columns:120px 1fr auto;align-items:baseline;gap:20px;padding:18px 0;border-bottom:1px solid var(--line);animation:in .45s cubic-bezier(.2,.8,.2,1) both}
+.row b{font-family:'Big Shoulders Display';font-weight:700;font-size:38px;font-variant-numeric:tabular-nums;line-height:1}
+.row span{font-size:20px;text-transform:uppercase;letter-spacing:.06em;font-weight:400}.row small{color:var(--mute)}
+@keyframes in{from{opacity:0;transform:translateX(-10px)}}
+@media(max-width:700px){nav,.hero,.sw,.tt,.cls{padding-left:20px;padding-right:20px}.plans{margin:22px 20px 0;grid-template-columns:1fr}.pl{border-right:0;border-bottom:1px solid var(--line);padding-left:0}.row{grid-template-columns:84px 1fr auto}}
+</style></head><body>
+<nav><span class="logo">PULSE<i>.</i></span><button class="cta">ücretsiz deneme</button></nav>
+<section class="hero"><h1>sınırını<br><span>zorla.</span></h1></section>
+<div class="sw" id="sw"><button class="on" data-y="0">aylık</button><button data-y="1">yıllık · %20 daha az</button></div>
+<div class="plans" id="plans"></div><div class="tt" id="tt"></div><div class="cls" id="cls"></div>
+<script>
+const PL=[['başlangıç',500,'haftada 2 ders'],['standart',750,'sınırsız ders'],['premium',1100,'özel antrenör dahil']];
+const T={'pzt':[['07:30','hiit','45 dk'],['18:30','pilates','50 dk'],['20:00','boks','60 dk']],'sal':[['08:00','yoga','60 dk'],['19:00','crossfit','55 dk']],'çar':[['07:30','spinning','45 dk'],['18:00','fonksiyonel','50 dk'],['20:00','hiit','45 dk']]};
+const $=s=>document.querySelector(s);let y=0,d='pzt';
+function draw(){$('#plans').innerHTML=PL.map((p,i)=>`<div class="pl ${i===1?'hot':''}"><h3>${p[0]}</h3><b>${Math.round(p[1]*(y?.8:1))} ₺</b><small>aylık · ${p[2]}</small></div>`).join('');
+$('#tt').innerHTML=Object.keys(T).map(k=>`<button class="${k===d?'on':''}" data-d="${k}">${k}</button>`).join('');
+$('#cls').innerHTML=T[d].map((c,i)=>`<div class="row" style="animation-delay:${i*70}ms"><b>${c[0]}</b><span>${c[1]}</span><small>${c[2]}</small></div>`).join('')}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-y]'),b=e.target.closest('[data-d]');
+if(a){y=+a.dataset.y;document.querySelectorAll('#sw button').forEach(x=>x.classList.toggle('on',x===a));draw()}if(b){d=b.dataset.d;draw()}});draw();
+</script></body></html>

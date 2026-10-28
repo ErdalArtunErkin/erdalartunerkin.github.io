@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>rota motors</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e0f;--ink:#ecebe7;--mute:#ecebe78f;--line:#ecebe71f;--acc:#c8a15a}
+*{box-sizing:border-box;margin:0}
+body{font-family:Archivo,sans-serif;font-stretch:100%;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+::selection{background:var(--ink);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--acc);outline-offset:3px}
+nav{display:flex;align-items:center;gap:32px;padding:24px 40px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.logo{font-stretch:125%;font-weight:600;letter-spacing:.3em;margin-right:auto}
+nav a{color:var(--mute)}
+.cta{border:1px solid var(--line);padding:10px 20px;letter-spacing:.16em;text-transform:uppercase;font-size:12px;transition:background .25s,color .25s}
+.cta:hover{background:var(--ink);color:var(--bg)}
+.hero{padding:72px 40px 52px}
+h1{font-stretch:125%;font-weight:200;font-size:clamp(40px,8vw,110px);line-height:.98;letter-spacing:-.035em}
+h1 b{font-weight:600}
+.hero p{margin-top:26px;color:var(--mute);max-width:30em;font-size:15px;line-height:1.6}
+.chips{display:flex;gap:28px;padding:0 40px 14px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid var(--line);margin:0 0 0}
+.chips button{color:var(--mute);padding-bottom:14px;margin-bottom:-15px;border-bottom:1px solid transparent;transition:color .2s}
+.chips button.on{color:var(--ink);border-color:var(--ink)}
+.list{padding:0 40px 60px}
+.row{border-bottom:1px solid var(--line);cursor:pointer;animation:in .5s cubic-bezier(.2,.8,.2,1) both}
+.top{display:grid;grid-template-columns:18px 1fr 120px 150px;align-items:center;gap:20px;padding:26px 0}
+.sw{width:10px;height:10px;border-radius:50%}
+.top h3{font-stretch:112%;font-weight:300;font-size:clamp(22px,3vw,34px);letter-spacing:-.02em;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.row:hover h3{transform:translateX(8px)}
+.top small{color:var(--mute);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.top .p{text-align:right;font-variant-numeric:tabular-nums;font-size:17px;font-weight:300}
+.d{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1)}
+.row.open .d{grid-template-rows:1fr}
+.d>div{overflow:hidden}
+.spec{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:0 0 26px 38px;font-size:12px;color:var(--mute)}
+.spec span{display:block;color:var(--ink);font-size:15px;margin-top:4px;font-weight:300;font-variant-numeric:tabular-nums}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:12px 22px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:0;transition:.4s cubic-bezier(.2,.8,.2,1)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@keyframes in{from{opacity:0;transform:translateY(12px)}}
+@media(max-width:620px){nav{padding:20px}nav a{display:none}.hero,.chips,.list{padding-left:20px;padding-right:20px}.top{grid-template-columns:12px 1fr auto}.top small{display:none}.spec{grid-template-columns:1fr 1fr;padding-left:32px}}
+</style></head><body>
+<nav><span class="logo">ROTA</span><a>araçlar</a><a>ekspertiz</a><button class="cta" id="rv">randevu al</button></nav>
+<section class="hero"><h1>aradığınız araç,<br><b>burada.</b></h1><p>ekspertiz raporlu ve garantili ikinci el araçlar. her biri tek tek incelenir, açıkça anlatılır.</p></section>
+<div class="chips" id="chips"></div><div class="list" id="grid"></div><div class="toast" id="toast">randevu talebiniz alındı (örnek)</div>
+<script>
+const C=[['aura gt','premium','2.450.000','12.400','#9b2c2c','2022'],['nord x5','suv','1.980.000','38.000','#3d5a80','2020'],['volt e1','elektrik','1.650.000','6.200','#4f7a63','2023'],['brava s','premium','2.120.000','21.900','#d8d6d0','2021'],['terra 4x4','suv','1.540.000','54.000','#a88444','2019'],['volt e3','elektrik','2.050.000','3.800','#6b5fa8','2024']];
+const $=s=>document.querySelector(s);let f='hepsi';
+function draw(){$('#chips').innerHTML=['hepsi','premium','suv','elektrik'].map(k=>`<button class="${k===f?'on':''}" data-f="${k}">${k}</button>`).join('');
+$('#grid').innerHTML=C.filter(x=>f==='hepsi'||x[1]===f).map((x,i)=>`<div class="row" style="animation-delay:${i*60}ms"><div class="top"><i class="sw" style="background:${x[4]}"></i><h3>${x[0]}</h3><small>${x[1]}</small><span class="p">${x[2]} ₺</span></div><div class="d"><div><div class="spec"><div>model yılı<span>${x[5]}</span></div><div>kilometre<span>${x[3]} km</span></div><div>vites<span>otomatik</span></div><div>garanti<span>12 ay, ekspertizli</span></div></div></div></div></div>`).join('')}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){f=b.dataset.f;draw()}const c=e.target.closest('.row');if(c)c.classList.toggle('open');
+if(e.target.id==='rv'){const t=$('#toast');t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800)}});draw();
+</script></body></html>

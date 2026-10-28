@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>nova gayrimenkul</title>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e4e7e5;--ink:#1b1d1f;--mute:#1b1d1fbd;--line:#1b1d1f24;--acc:#3a4a40}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Albert Sans',sans-serif;font-weight:300;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+::selection{background:var(--acc);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--acc);outline-offset:3px}
+nav{display:flex;align-items:center;gap:32px;padding:24px 40px;font-size:13px}
+.logo{font-weight:500;letter-spacing:.34em;text-transform:uppercase;font-size:12px;margin-right:auto}
+nav a{color:var(--mute)}
+.hero{padding:64px 40px 40px}
+h1{font-weight:200;font-size:clamp(40px,7.4vw,104px);line-height:.98;letter-spacing:-.045em;max-width:12em}
+h1 b{font-weight:500}
+.bar{display:flex;gap:28px;padding:0 40px 14px;font-size:13px;border-bottom:1px solid var(--line);align-items:center}
+.bar button{color:var(--mute);padding-bottom:14px;margin-bottom:-15px;border-bottom:1px solid transparent;transition:color .2s}
+.bar button.on{color:var(--ink);border-color:var(--ink)}
+.bar .sort{margin-left:auto}
+.list{padding:0 40px 60px}
+.row{display:grid;grid-template-columns:150px 1fr auto 70px;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid var(--line);animation:in .5s cubic-bezier(.2,.8,.2,1) both}
+.plan{width:150px;height:96px;color:var(--ink);transition:color .3s}
+.row:hover .plan{color:var(--acc)}
+.plan *{vector-effect:non-scaling-stroke}
+.row h3{font-weight:300;font-size:clamp(20px,2.6vw,30px);letter-spacing:-.025em}
+.row small{display:block;color:var(--mute);font-size:13px;margin-top:6px}
+.pr{font-size:20px;font-weight:300;font-variant-numeric:tabular-nums;text-align:right}
+.pr small{margin-top:4px}
+.save{font-size:12px;color:var(--mute);text-align:right;transition:color .2s}.save.on{color:var(--acc)}
+@keyframes in{from{opacity:0;transform:translateY(12px)}}
+@media(max-width:700px){nav,.hero,.bar,.list{padding-left:20px;padding-right:20px}nav a{display:none}.row{grid-template-columns:90px 1fr auto;gap:16px}.plan{width:90px;height:62px}.save{display:none}}
+</style></head><body>
+<nav><span class="logo">nova</span><a>satılık</a><a>kiralık</a><a>iletişim</a></nav>
+<section class="hero"><h1>yaşayacağınız yeri <b>sakince</b> bulun.</h1></section>
+<div class="bar" id="bar"></div><div class="list" id="grid"></div>
+<script>
+const L=[['3+1 daire','karşıyaka','satilik',5200000,135,3],['2+1 daire','alsancak','kiralik',32000,95,2],['villa','urla','satilik',14800000,280,5],['1+1 rezidans','bornova','kiralik',21000,62,1],['4+1 dubleks','bayraklı','satilik',7900000,190,4],['2+1 daire','çeşme','kiralik',45000,100,2]];
+const $=s=>document.querySelector(s);let f='hepsi',asc=false;const fav=new Set();
+const fmt=n=>new Intl.NumberFormat('tr-TR').format(n)+' ₺';
+// kat planı: oda sayısına göre bölünen ince çizgili çizim
+function plan(n){let s='<rect x="2" y="2" width="146" height="92" fill="none" stroke="currentColor" stroke-width="1"/>',w=146/Math.min(n,4);
+for(let i=1;i<Math.min(n,4);i++)s+=`<path d="M${2+w*i} 2V${i%2?58:40}M${2+w*i} ${i%2?74:62}V94" stroke="currentColor" stroke-width="1" fill="none"/>`;
+s+='<path d="M2 58H'+(n>1?60:148)+'" stroke="currentColor" stroke-width="1" fill="none"/><path d="M148 30v14" stroke="var(--bg)" stroke-width="3"/>';
+return `<svg class="plan" viewBox="0 0 150 96">${s}</svg>`}
+function draw(){$('#bar').innerHTML=['hepsi','satilik','kiralik'].map(k=>`<button class="${k===f?'on':''}" data-f="${k}">${k.replace('satilik','satılık').replace('kiralik','kiralık')}</button>`).join('')+`<button class="sort" id="sort">fiyat ${asc?'↑ artan':'sırasız'}</button>`;
+let a=L.map((x,i)=>[...x,i]).filter(x=>f==='hepsi'||x[2]===f);if(asc)a.sort((p,q)=>p[3]-q[3]);
+$('#grid').innerHTML=a.map((x,i)=>`<div class="row" style="animation-delay:${i*60}ms">${plan(x[5])}<div><h3>${x[0]}</h3><small>${x[1]} · ${x[4]} m² · ${x[2]==='satilik'?'satılık':'kiralık'}</small></div><div class="pr">${fmt(x[3])}${x[2]==='kiralik'?'<small>aylık</small>':''}</div><button class="save ${fav.has(x[6])?'on':''}" data-h="${x[6]}">${fav.has(x[6])?'kayıtlı':'kaydet'}</button></div>`).join('')}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){f=b.dataset.f;draw()}const h=e.target.closest('[data-h]');
+if(h){const i=+h.dataset.h;fav.has(i)?fav.delete(i):fav.add(i);h.classList.toggle('on');h.textContent=fav.has(i)?'kayıtlı':'kaydet'}if(e.target.id==='sort'){asc=!asc;draw()}});draw();
+</script></body></html>

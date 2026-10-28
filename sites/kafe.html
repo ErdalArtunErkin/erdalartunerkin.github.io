@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>bahçe kahve</title>
+<link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Karla:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1c2620;--ink:#ece6d6;--mute:#ece6d6b8;--line:#ece6d62b;--acc:#d9b27c}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Karla',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+::selection{background:var(--acc);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--acc);outline-offset:3px}
+nav{display:flex;align-items:baseline;gap:28px;padding:22px 40px;font-size:13px}
+.logo{font-family:'Gilda Display',serif;font-size:26px;margin-right:auto;letter-spacing:-.01em}
+nav a{color:var(--mute)}
+.cart{border-bottom:1px solid var(--ink);padding-bottom:1px;transition:letter-spacing .3s cubic-bezier(.2,.8,.2,1)}
+.cart.bump{letter-spacing:.06em}
+.hero{padding:56px 40px 44px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px}
+h1{font-family:'Gilda Display',serif;font-weight:400;font-size:clamp(48px,9vw,120px);line-height:.92;letter-spacing:-.03em}
+h1 em{color:var(--acc);font-style:normal}
+.meta{font-size:12px;line-height:1.7;color:var(--mute);text-align:right;white-space:nowrap}
+.tabs{display:flex;gap:26px;padding:26px 40px 10px;font-size:13px}
+.tabs button{color:var(--mute);padding-bottom:3px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.tabs button.on{color:var(--ink);border-color:var(--ink)}
+.list{padding:0 40px 56px;max-width:880px}
+.item{display:flex;align-items:baseline;gap:14px;padding:18px 0;border-bottom:1px solid var(--line);animation:in .5s cubic-bezier(.2,.8,.2,1) both}
+.item h3{font-family:'Gilda Display',serif;font-weight:400;font-size:28px;letter-spacing:-.01em}
+.item small{color:var(--mute);font-size:13px;flex:1}
+.item .fill{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-4px)}
+.item .pr{font-variant-numeric:tabular-nums;font-size:15px}
+.add{width:28px;height:28px;border:1px solid var(--line);border-radius:50%;font-size:15px;line-height:1;transition:background .2s,color .2s,border-color .2s}
+.add:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+@media(max-width:620px){nav,.hero,.tabs,.list{padding-left:20px;padding-right:20px}.hero{grid-template-columns:1fr}.meta{text-align:left}nav a{display:none}.item small{display:none}}
+</style></head><body>
+<nav><span class="logo">bahçe kahve</span><a>menü</a><a>hakkımızda</a><button class="cart" id="cart">sepet — 0</button></nav>
+<section class="hero"><h1>güne<br><em>yavaş</em> başla.</h1><p class="meta">alsancak, izmir<br>her gün 08.00 – 22.00<br>bahçede masa, içeride sessizlik</p></section>
+<div class="tabs" id="tabs"></div><div class="list" id="list"></div>
+<script>
+const M={'sıcak':[['flat white','çift shot, ipek süt köpüğü',95],['filtre kahve','günün tek kökenli çekirdeği',80],['latte','yumuşak içim',105],['türk kahvesi','közde, lokumla',70]],
+'soğuk':[['cold brew','on sekiz saat demlenmiş',110],['buzlu latte','vanilya şurubu',115],['limonata','taze nane',75]],
+'tatlı':[['san sebastian','günlük, ev yapımı',160],['brownie','sıcak servis',120],['kruvasan','tereyağlı',90]]};
+let n=0,sum=0;const $=s=>document.querySelector(s);
+function show(t){$('#tabs').innerHTML=Object.keys(M).map(k=>`<button class="${k===t?'on':''}" data-t="${k}">${k}</button>`).join('');
+$('#list').innerHTML=M[t].map((x,i)=>`<div class="item" style="animation-delay:${i*60}ms"><h3>${x[0]}</h3><small>${x[1]}</small><span class="pr">${x[2]} ₺</span><button class="add" data-p="${x[2]}" aria-label="ekle">+</button></div>`).join('')}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t)show(t.dataset.t);const a=e.target.closest('.add');
+if(a){n++;sum+=+a.dataset.p;const c=$('#cart');c.textContent=`sepet — ${n} · ${sum} ₺`;c.classList.add('bump');setTimeout(()=>c.classList.remove('bump'),260)}});
+show('sıcak');
+</script></body></html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>fırın napoli</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#8f2414;--ink:#f6ecdc;--mute:#f6ecdcc2;--line:#f6ecdc33;--acc:#f2b66b}
+*{box-sizing:border-box;margin:0}
+body{font-family:'DM Sans',sans-serif;font-weight:300;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+::selection{background:var(--acc);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--acc);outline-offset:3px}
+nav{display:flex;align-items:baseline;padding:24px 40px;font-size:13px}
+.logo{font-family:'DM Serif Display',serif;font-size:26px;margin-right:auto}
+.cart{border-bottom:1px solid var(--ink);padding-bottom:1px;font-weight:400;transition:letter-spacing .3s cubic-bezier(.2,.8,.2,1)}.cart.bump{letter-spacing:.05em}
+.hero{display:grid;grid-template-columns:1fr 280px;align-items:center;gap:40px;padding:48px 40px 40px;border-bottom:1px solid var(--line)}
+h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(46px,8.4vw,116px);line-height:.92;letter-spacing:-.025em}
+h1 em{color:var(--acc);font-style:normal}
+.disc{aspect-ratio:1;display:grid;place-items:center;position:relative}
+.disc svg{width:100%;overflow:visible}
+.disc circle{fill:none;stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke;transition:r .6s cubic-bezier(.2,.8,.2,1)}
+.disc .out{stroke-dasharray:2 5;stroke:var(--mute)}
+.disc span{position:absolute;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.sizes{display:flex;gap:26px;padding:26px 40px 8px;font-size:13px;align-items:baseline}
+.sizes em{font-family:'DM Serif Display';font-style:italic;font-size:18px;margin-right:6px}
+.sizes button{color:var(--mute);border-bottom:1px solid transparent;padding-bottom:2px;transition:color .2s}
+.sizes button.on{color:var(--ink);border-color:var(--ink)}
+.menu{padding:0 40px 56px;max-width:900px}
+.it{display:flex;align-items:baseline;gap:14px;padding:20px 0;border-bottom:1px solid var(--line);animation:in .5s cubic-bezier(.2,.8,.2,1) both}
+.it h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px}
+.it small{flex:1;color:var(--mute);font-size:13px}
+.it .pr{font-variant-numeric:tabular-nums;font-weight:400}
+.q{display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:99px;padding:2px;align-self:center}
+.q button{width:28px;height:28px;border-radius:50%;font-size:15px;transition:background .15s,color .15s}.q button:hover{background:var(--ink);color:var(--bg)}
+.q span{min-width:20px;text-align:center;font-size:14px;font-variant-numeric:tabular-nums}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+@media(max-width:700px){nav,.hero,.sizes,.menu{padding-left:20px;padding-right:20px}.hero{grid-template-columns:1fr}.disc{display:none}.it small{display:none}.it h3{flex:1;font-size:24px}}
+</style></head><body>
+<nav><span class="logo">fırın napoli</span><button class="cart" id="cart">sepet — 0 ₺</button></nav>
+<section class="hero"><h1>odun ateşinde,<br><em>sıcak sıcak.</em></h1><div class="disc"><svg viewBox="-100 -100 200 200"><circle class="out" r="96"/><circle id="ring" r="70"/></svg><span id="dia"></span></div></section>
+<div class="sizes"><em>boy</em><span id="sz" style="display:contents"></span></div><div class="menu" id="menu"></div>
+<script>
+const P=[['margherita','domates, mozzarella, fesleğen',180],['diavola','acı salam, mozzarella',220],['funghi','mantar, mozzarella, kekik',210],['quattro formaggi','dört peynir',240]];
+const SZ=[['küçük',1,24,56],['orta',1.25,30,72],['büyük',1.5,36,88]];const q=P.map(()=>0);let s=1;const $=x=>document.querySelector(x);
+const price=i=>Math.round(P[i][2]*SZ[s][1]);
+function draw(){$('#sz').innerHTML=SZ.map((x,i)=>`<button class="${i===s?'on':''}" data-s="${i}">${x[0]}</button>`).join('');
+$('#ring').setAttribute('r',SZ[s][3]);$('#dia').textContent='ø '+SZ[s][2]+' cm';
+$('#menu').innerHTML=P.map((x,i)=>`<div class="it" style="animation-delay:${i*60}ms"><h3>${x[0]}</h3><small>${x[1]}</small><span class="pr">${price(i)} ₺</span><div class="q"><button data-m="${i}" aria-label="azalt">−</button><span>${q[i]}</span><button data-p="${i}" aria-label="artır">+</button></div></div>`).join('');
+const t=q.reduce((a,n,i)=>a+n*price(i),0);$('#cart').textContent=`sepet — ${t} ₺`}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-p]'),m=e.target.closest('[data-m]'),z=e.target.closest('[data-s]');
+if(a)q[+a.dataset.p]++;if(m&&q[+m.dataset.m])q[+m.dataset.m]--;if(z)s=+z.dataset.s;if(a||m||z){draw();const c=$('#cart');c.classList.add('bump');setTimeout(()=>c.classList.remove('bump'),220)}});draw();
+</script></body></html>

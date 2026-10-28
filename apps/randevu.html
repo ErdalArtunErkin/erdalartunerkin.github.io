@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>randevu</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1e1418;--ink:#f0e4e0;--mute:#f0e4e0b8;--line:#f0e4e033;--acc:#d9a1b4}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Jost,sans-serif;font-weight:300;background:var(--bg);color:var(--ink);height:100vh;padding:52px 24px 26px;display:flex;flex-direction:column;gap:14px;overflow:hidden;-webkit-font-smoothing:antialiased}
+button,.d,.chip{font:inherit;color:inherit;cursor:pointer}
+h1{font-family:'Bodoni Moda',serif;font-weight:400;font-size:38px;line-height:1;letter-spacing:-.02em;margin-bottom:6px}h1 em{color:var(--acc);font-style:normal}
+h2{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:400;color:var(--mute);margin-top:6px}
+.days{display:flex;gap:6px}.d{flex:1;border-bottom:1px solid var(--line);padding:8px 0 10px;text-align:center;font-size:11px;color:var(--mute);transition:color .25s,border-color .25s}
+.d b{display:block;font-family:'Bodoni Moda',serif;font-weight:400;font-size:22px;color:var(--ink);margin-top:2px}
+.d.on{border-color:var(--acc);color:var(--acc)}.d.on b{color:var(--acc)}
+.row{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);padding:8px 15px;font-size:13px;transition:background .25s,color .25s,border-color .25s}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.go{margin-top:auto;border:0;background:var(--ink);color:var(--bg);padding:17px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;transition:opacity .25s,transform .2s cubic-bezier(.2,.8,.2,1)}.go:disabled{opacity:.25}.go:active{transform:scale(.98)}
+.ok{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px}.ok.on{display:flex;animation:in .5s both}
+.ok svg{width:64px}.ok path{stroke-dasharray:60;stroke-dashoffset:60;animation:dr .7s .25s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes dr{to{stroke-dashoffset:0}}@keyframes in{from{opacity:0}}
+.ok b{font-family:'Bodoni Moda',serif;font-weight:400;font-size:30px;letter-spacing:-.02em}.ok span{color:var(--mute)}
+</style></head><body>
+<h1>randevu <em>al.</em></h1><h2>gün</h2><div class="days" id="days"></div><h2>saat</h2><div class="row" id="slots"></div><h2>hizmet</h2><div class="row" id="svc"></div>
+<button class="go" id="go" disabled>onayla</button>
+<div class="ok" id="ok"><svg viewBox="0 0 52 52" fill="none" stroke="#d9a1b4" stroke-width="1.5" stroke-linecap="round"><circle cx="26" cy="26" r="24"/><path d="M15 27l8 8 14-16"/></svg><b>randevunuz alındı.</b><span id="sum"></span><div class="chip" id="back" style="margin-top:14px">yeni randevu</div></div>
+<script>
+const $=s=>document.querySelector(s);const D=['pzt','sal','çar','per','cum','cmt'];const st={d:null,t:null,s:null};
+$('#days').innerHTML=D.map((x,i)=>`<div class="d" data-k="d" data-v="${x} ${12+i}">${x}<b>${12+i}</b></div>`).join('');
+$('#slots').innerHTML=['10:00','11:30','14:00','15:30','17:00'].map(x=>`<div class="chip" data-k="t" data-v="${x}">${x}</div>`).join('');
+$('#svc').innerHTML=['saç kesimi','boya','bakım','manikür'].map(x=>`<div class="chip" data-k="s" data-v="${x}">${x}</div>`).join('');
+document.addEventListener('click',e=>{const c=e.target.closest('[data-k]');if(c){st[c.dataset.k]=c.dataset.v;document.querySelectorAll(`[data-k="${c.dataset.k}"]`).forEach(x=>x.classList.toggle('on',x===c));$('#go').disabled=!(st.d&&st.t&&st.s)}});
+$('#go').onclick=()=>{$('#sum').textContent=`${st.d} · ${st.t} · ${st.s}`;$('#ok').classList.add('on')};
+$('#back').onclick=()=>{$('#ok').classList.remove('on');document.querySelectorAll('.on').forEach(x=>x.classList.remove('on'));st.d=st.t=st.s=null;$('#go').disabled=true};
+</script></body></html>

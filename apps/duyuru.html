@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>kampanyalar</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;700;900&family=Hanken+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0b;--ink:#efede6;--mute:#efede694;--line:#efede62b;--acc:#ff5b2e}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Hanken Grotesk',sans-serif;font-weight:300;background:var(--bg);color:var(--ink);height:100vh;padding:52px 24px 26px;display:flex;flex-direction:column;gap:14px;overflow:hidden;-webkit-font-smoothing:antialiased}
+h1{font-family:'Big Shoulders Display';font-weight:900;font-size:46px;line-height:.9;text-transform:uppercase;letter-spacing:.01em}
+.nt{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:13px 0;font-size:13px;color:var(--mute)}
+.sw{width:40px;height:22px;border-radius:99px;border:1px solid var(--mute);position:relative;cursor:pointer;transition:background .3s,border-color .3s}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--ink);transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s}
+.sw.on{background:var(--acc);border-color:var(--acc)}.sw.on:after{transform:translateX(18px);background:var(--bg)}
+.cp{border:1px solid var(--line);border-radius:6px;padding:18px 18px 16px;cursor:pointer;transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s;position:relative}
+.cp:active{transform:scale(.98)}.cp.open{border-color:var(--ink)}
+.cp small{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}
+.cp b{display:block;font-family:'Big Shoulders Display';font-weight:700;font-size:32px;line-height:1;margin:8px 0 0;text-transform:uppercase;letter-spacing:.01em}
+.cp .hint{font-size:12px;color:var(--mute);margin-top:10px;transition:opacity .25s}.cp.open .hint{opacity:0;height:0;margin:0}
+.cp .wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}.cp.open .wrap{grid-template-rows:1fr}
+.code{overflow:hidden;font-family:'Big Shoulders Display';font-weight:700;letter-spacing:.3em;font-size:22px;color:var(--acc);border-top:1px dashed var(--line);margin-top:0;padding-top:0}
+.cp.open .code{margin-top:14px;padding-top:12px}
+.toast{position:absolute;left:24px;right:24px;top:-80px;background:var(--ink);color:var(--bg);padding:14px 16px;font-size:13px;font-weight:400;transition:top .5s cubic-bezier(.2,.8,.2,1)}.toast.on{top:44px}
+</style></head><body>
+<div class="toast" id="t">yeni kampanya: hafta sonu %20 indirim</div>
+<h1>kampanyalar</h1><div class="nt">bildirimler<div class="sw" id="sw"></div></div>
+<div class="cp"><small>bu hafta</small><b>ilk siparişte %15</b><div class="hint">kuponu görmek için dokunun</div><div class="wrap"><div class="code">HOSGELDIN15</div></div></div>
+<div class="cp"><small>hafta sonu</small><b>2 al 1 öde</b><div class="hint">kuponu görmek için dokunun</div><div class="wrap"><div class="code">IKISI1</div></div></div>
+<div class="cp"><small>sadakat</small><b>doğum gününe özel</b><div class="hint">kuponu görmek için dokunun</div><div class="wrap"><div class="code">DOGUMGUNU</div></div></div>
+<script>
+const $=s=>document.querySelector(s);let on=false;
+document.addEventListener('click',e=>{const c=e.target.closest('.cp');if(c)c.classList.toggle('open')});
+$('#sw').onclick=()=>{on=!on;$('#sw').classList.toggle('on',on);if(on){setTimeout(()=>$('#t').classList.add('on'),400);setTimeout(()=>$('#t').classList.remove('on'),3000)}else $('#t').classList.remove('on')};
+</script></body></html>
