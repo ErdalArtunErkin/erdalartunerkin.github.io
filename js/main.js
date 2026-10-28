@@ -54,7 +54,8 @@ function initBrowser() {
     $('w-count').textContent = list.length ? `${list.indexOf(idx) + 1} / ${list.length}` : '0';
     newBtn.disabled = open.every(Boolean);
     const on = tabsEl.querySelector('.tab.on');
-    if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    // sayfayı değil yalnızca sekme şeridini kaydır (scrollIntoView açılışta sayfayı aşağı atıyordu)
+    if (on) tabsEl.scrollLeft += Math.min(0, on.offsetLeft - tabsEl.scrollLeft) + Math.max(0, on.offsetLeft + on.offsetWidth - tabsEl.scrollLeft - tabsEl.clientWidth);
   }
   function activate(i) {
     idx = i;
