@@ -344,3 +344,12 @@ header::before { content: ""; position: absolute; inset: 0 0 -26px; z-index: -1;
 .win-wrap { min-width: 0; }
 
 @media (max-width: 700px) { .fab { display: none; } }
+
+/* dokunmatik ekran: ✕, +, sekmeler ve pencere düğmeleri parmakla rahat basılsın (≥ 34 px) */
+@media (pointer: coarse) {
+  .dots { gap: .6rem; }
+  .d { width: 20px; height: 20px; }
+  .tab { min-width: 116px; padding: .8rem .2rem .8rem .7rem; }
+  .tab .x { width: 34px; height: 34px; font-size: 13px; }
+  .newtab { width: 40px; height: 40px; font-size: 22px; }
+}

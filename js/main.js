@@ -55,7 +55,7 @@ function initBrowser() {
     newBtn.disabled = open.every(Boolean);
     const on = tabsEl.querySelector('.tab.on');
     // sayfayı değil yalnızca sekme şeridini kaydır (scrollIntoView açılışta sayfayı aşağı atıyordu)
-    if (on) tabsEl.scrollLeft += Math.min(0, on.offsetLeft - tabsEl.scrollLeft) + Math.max(0, on.offsetLeft + on.offsetWidth - tabsEl.scrollLeft - tabsEl.clientWidth);
+    if (on) { const a = on.getBoundingClientRect(), c = tabsEl.getBoundingClientRect(); tabsEl.scrollLeft += Math.min(0, a.left - c.left) + Math.max(0, a.right - c.right); }
   }
   function activate(i) {
     idx = i;
