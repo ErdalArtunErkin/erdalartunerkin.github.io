@@ -268,7 +268,7 @@ header { z-index: 8; }
 .t-voice small { font-family: var(--fb); letter-spacing: .2em; font-size: .68rem; opacity: .85; }
 
 .flip { width: 76%; aspect-ratio: 1.7; position: relative; transform-style: preserve-3d; transition: transform .85s cubic-bezier(.3, 1.1, .4, 1); cursor: pointer; }
-.t-card:hover .flip, .flip.on { transform: rotateY(180deg); }
+.flip.on { transform: rotateY(180deg); }
 .face { position: absolute; inset: 0; border-radius: 3px; backface-visibility: hidden; box-shadow: 0 1px 0 #ffffff1f inset, 0 24px 40px -16px #000c, 0 4px 10px -4px #0008; display: grid; place-items: center; }
 .face.front { background: var(--logoBg); color: var(--logoFg); } .face.front svg { width: 34%; }
 .face.back { background: var(--typeBg); color: var(--typeFg); transform: rotateY(180deg); place-items: start; align-content: space-between; padding: 7%; text-align: left; }
@@ -353,3 +353,18 @@ header::before { content: ""; position: absolute; inset: 0 0 -26px; z-index: -1;
   .tab .x { width: 34px; height: 34px; font-size: 13px; }
   .newtab { width: 40px; height: 40px; font-size: 22px; }
 }
+
+/* etkileşim belirteci: sönük, küçük bir hap; ilk dokunuşa kadar durur */
+.nudge { position: absolute; z-index: 4; left: 50%; bottom: 14px; translate: -50% 0; display: flex; align-items: center; gap: .55rem; padding: .48rem .95rem; border-radius: 99px; background: #0b0b0bb8; color: #f4f4f2; border: 1px solid #ffffff26; backdrop-filter: blur(8px); font: inherit; font-size: .74rem; letter-spacing: .03em; white-space: nowrap; text-transform: lowercase; pointer-events: none; animation: nudge-in .7s 1.2s cubic-bezier(.16, 1, .3, 1) both; transition: opacity .4s, translate .4s; }
+.nudge.btn { pointer-events: auto; cursor: pointer; }
+.nudge.top { bottom: auto; top: 12px; }
+.nudge.off { opacity: 0; translate: -50% 8px; }
+.nudge i { width: 7px; height: 7px; border-radius: 50%; background: #f4f4f2; animation: nudge-pulse 2.2s ease-out infinite; }
+.win.none .nudge { display: none; }
+.ico.hinted > i { animation: ico-pulse 2.2s ease-out infinite; }
+@keyframes nudge-in { from { opacity: 0; translate: -50% 10px; } }
+@keyframes nudge-pulse { 0% { box-shadow: 0 0 0 0 #f4f4f2aa; } 70%, 100% { box-shadow: 0 0 0 9px #f4f4f200; } }
+@keyframes ico-pulse { 0% { box-shadow: 0 0 0 0 #ffffff80; } 70%, 100% { box-shadow: 0 0 0 12px #ffffff00; } }
+@media (pointer: coarse) { .win:not(.live) #w-frame { pointer-events: none; } }
+@media (prefers-reduced-motion: reduce) { .nudge, .nudge i, .ico.hinted > i { animation: none; } }
+.nudge.low { bottom: 46px; }

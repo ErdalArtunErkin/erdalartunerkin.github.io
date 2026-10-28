@@ -27,6 +27,22 @@ function setLang(l) {
   langHooks.forEach((fn) => fn());
 }
 
+/* ---------- küçük etkileşim belirteçleri: ilk dokunuşa kadar duran, sönük bir hap ---------- */
+function nudge(host, tr, en, cls = '', clickable = false) {
+  const el = document.createElement(clickable ? 'button' : 'span');
+  if (clickable) el.type = 'button';
+  el.className = `nudge ${cls}${clickable ? ' btn' : ''}`;
+  el.innerHTML = '<i></i><b></b>';
+  host.appendChild(el);
+  let texts = [tr, en];
+  const set = (a, b) => { texts = [a, b]; paint(); };
+  const paint = () => (el.querySelector('b').textContent = texts[lang === 'en' ? 1 : 0]);
+  onLang(paint);
+  const done = () => { el.classList.add('off'); setTimeout(() => el.remove(), 500); host.removeEventListener('pointerdown', done, true); };
+  if (!clickable) host.addEventListener('pointerdown', done, true);
+  return { el, done, set };
+}
+
 /* ---------- 01 web siteleri: tarayıcı penceresi ---------- */
 const SITES = [
   ['kafe', 'bahcekahve.com', 'bahçe kahve'], ['oto', 'rotamotors.com', 'rota motors'], ['kuafor', 'mirastudio.com', 'mira studio'],
@@ -41,6 +57,17 @@ function initBrowser() {
   const tabsEl = $('tabs'), glow = $('glow'), newBtn = $('newtab');
   const open = SITES.map(() => true); // sekme açık mı
   let idx = 0, fresh = -1;
+
+  // dokunmatikte iframe sayfa kaydırmasını yutuyordu: "dene" demeden iframe dokunuşu almaz
+  const coarse = matchMedia('(pointer: coarse)').matches, body = document.querySelector('.win-body');
+  const wn = nudge(body, 'tıklayın, deneyin', 'click to try', 'top', coarse);
+  const setLive = (on) => {
+    win.classList.toggle('live', on);
+    if (coarse) wn.set(on ? 'bitti, sayfaya dön' : 'dokunun, siteyi deneyin', on ? 'done, back to the page' : 'tap to try the site');
+  };
+  if (coarse) { setLive(false); wn.el.onclick = () => setLive(!win.classList.contains('live')); }
+  else window.addEventListener('blur', () => { if (document.activeElement === frame) wn.done(); });
+  win.addEventListener('tabchange', () => setLive(false));
 
   const replay = () => { win.classList.remove('enter'); void win.offsetWidth; win.classList.add('enter'); };
   const unmax = () => { win.classList.remove('max'); backdrop.classList.remove('on'); stage.style.minHeight = ''; document.body.style.overflow = ''; };
@@ -61,6 +88,7 @@ function initBrowser() {
     idx = i;
     win.classList.remove('none');
     frame.classList.add('loading');
+    win.dispatchEvent(new Event('tabchange'));
     frame.onload = () => frame.classList.remove('loading');
     frame.src = `sites/${SITES[i][0]}.html`;
     $('w-url').textContent = SITES[i][1];
@@ -157,6 +185,9 @@ function initPhone() {
   const closeApp = () => { screen.classList.remove('open'); setTimeout(() => { if (!screen.classList.contains('open')) frame.removeAttribute('src'); }, 450); };
   $('home').innerHTML = APPS.map((a) => `<button class="ico" type="button" data-k="${a[0]}"><i style="background:${a[2]}"><svg viewBox="0 0 24 24">${a[3]}</svg></i><span></span></button>`).join('');
   $('apps-list').innerHTML = APPS.map((a) => `<li><button type="button" data-k="${a[0]}"></button></li>`).join('');
+  const firstIcon = $('home').querySelector('.ico'); firstIcon.classList.add('hinted');
+  $('home').addEventListener('pointerdown', () => firstIcon.classList.remove('hinted'), true);
+  nudge($('home'), 'bir simgeye dokunun', 'tap an icon', 'low');
   onLang(() => {
     document.querySelectorAll('.ico span').forEach((sp, i) => (sp.textContent = t(APPS[i][1])));
     document.querySelectorAll('#apps-list button').forEach((b, i) => (b.textContent = t(APPS[i][1])));
@@ -207,6 +238,7 @@ function initBrand() {
   const renderPal = () => {
     $('pal').innerHTML = colorsOf(cur).map(([bg, fg], k) =>
       `<button class="stripe" type="button" style="--c:${bg};--t:${fg}" data-hex="${bg}"><b>${cur.names[k][L()]}</b><span>${bg}</span></button>`).join('');
+    if (!palNudge.el.classList.contains('off')) $('pal').appendChild(palNudge.el); // innerHTML belirteci siliyordu
   };
   const bind = () => {
     const text = { name: cur.name, sector: cur.sector[L()], head: cur.head, body: cur.body, quote: cur.quote[L()] };
@@ -244,7 +276,11 @@ function initBrand() {
     setTimeout(() => (sp.textContent = old), 1200);
   });
   // kartvizit: dokununca çevrilir
-  $('t-card').addEventListener('click', () => $('flip').classList.toggle('on'));
+  const card = $('t-card'), flip = () => $('flip').classList.toggle('on');
+  card.addEventListener('click', flip);
+  card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
+  nudge(card, 'çevirmek için dokunun', 'tap to flip', 'low');
+  const palNudge = nudge($('pal'), 'dokunun, rengi kopyalayın', 'tap to copy a color', 'top');
   // logo kutusu: logo fareyi hafifçe takip eder
   const tl = $('t-logo');
   if (finePointer && !reduced) {
